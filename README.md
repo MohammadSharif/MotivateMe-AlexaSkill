@@ -10,4 +10,4 @@ hardcoded currently, I would like to look into parsing quotes online in the near
 
 ## In Progress
 
-I am currently trying to integrate the skill to an RDS database hosted on Amazon Web Services, which will allow for having a database of quotes to randomly pick from that can be updated every once in a while. 
+I am currently trying to integrate the skill to a DynamoDB database hosted on Amazon Web Services, which will allow for having a database of quotes to randomly pick from that can be updated every once in a while.
