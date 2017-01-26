@@ -1,6 +1,7 @@
+storage = require("./storage");
 
-try {
-    exports.handler = (event, context, callback) => {
+exports.handler = (event, context, callback) => {
+        try {
         // TODO implement
         var quotes = [
           "Life is 10% what happens to you and 90% how you react to it.",
@@ -31,13 +32,13 @@ try {
         ];
 
         var authors = [
-        	"Charles R. Swindoll",
-        	"St. Jerome",
-        	"Bradley Whitford",
-        	"Eleanor Roosevelt",
-        	"Helen Keller",
-        	"Nikos Kazantzakis",
-        	"Aristotle",
+          "Charles R. Swindoll",
+          "St. Jerome",
+          "Bradley Whitford",
+          "Eleanor Roosevelt",
+          "Helen Keller",
+          "Nikos Kazantzakis",
+          "Aristotle",
           "Theodore Roosevelt",
           "Nelson Mandela",
           "Og Mandino",
@@ -58,14 +59,12 @@ try {
           "Tony Robbins"
       ];
 
-
-
-
-
-
       quote_index = Math.floor(Math.random() * 25);
-      var author = authors[quote_index];
-      var quote = quotes[quote_index];
+
+
+
+      // var author = authors[quote_index];
+      // var quote = quotes[quote_index];
 
 
 
@@ -78,16 +77,19 @@ try {
             case "LaunchRequest":
             // Launch Request
             console.log("Launch Request")
-            console.log(author + " once said " + quote)
+            storage.getQuote(event.session, function(quoteData){
+              console.log(quoteData[0] + " once said " + quoteData[1])
+              context.succeed(
+                generateResponse(
+                  buildSpeechletResponse(quoteData[0] + " once said " + quoteData[1], true),
+                  {}
+                )
+              )
+            });
 
-            context.succeed(
-
-          generateResponse(
-            buildSpeechletResponse(author + " once said " + quote, true),
-            {}
-          )
-        )
             break;
+
+
 
         //     case "IntentRequest":
         //     // Intent Request
@@ -116,9 +118,12 @@ try {
                 context.fail('Invalid Request Type: ${event.request.type}')
         }
 
-    };
-} catch(error) { context.fail('Exception: ${error}') }
 
+
+
+} catch(error) { context.fail('Exception: ' + error) }
+
+};
 
 
 // Helpers
