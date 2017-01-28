@@ -4,26 +4,25 @@ AWS.config.update({
   endpoint: "https://dynamodb.us-east-1.amazonaws.com"
 });
 
+
 var storage = (function(){
   var dynamodb = new AWS.DynamoDB.DocumentClient();
   return{
     getQuote: function(session, callback){
+
       var params = {
-        TableName: 'Motivate',
+        TableName: 'MotivateDB',
         Key: {
-          Number: 1
+          ItemValue: Math.floor(Math.random() * 26)
         }
       };
       console.log("Quote parameters defined");
-      try{
-        dynamodb.get(params, function(err, data){
-          console.log("Fetching your quote!");
-          var quoteData = [data.Item.author, data.Item.quote];
-          callback(quoteData);
-        });
-      } catch(error){
-        context.fail("Error Occured: " + error);
-      }
+      dynamodb.get(params, function(err, data){
+        console.log("Fetching your quote!");
+        console.log("GetItem succeeded:", JSON.stringify(data, null, 2));
+        callback(data.Item);
+      });
+
     }
   }
 })();
